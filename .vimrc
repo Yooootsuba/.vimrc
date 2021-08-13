@@ -57,7 +57,6 @@ Plugin 'machakann/vim-highlightedyank'
 Plugin 'vim-airline/vim-airline'
 Plugin 'tpope/vim-surround'
 Plugin 'vim-syntastic/syntastic'
-Plugin 'mg979/vim-visual-multi'
 Plugin 'vim-vdebug/vdebug'
 
 call vundle#end()
@@ -98,6 +97,14 @@ let g:highlightedyank_highlight_duration = 300
 set completeopt-=preview
 let g:ycm_disable_signature_help = 1
 let g:ycm_filetype_whitelist = {'*': 1}
+let g:ycm_log_level = "error"
+
+let g:ycm_filter_diagnostics = {
+  \ "c": {
+  \      "regex": ["warning"],
+  \      "level": "warning",
+  \    },
+  \ }
 
 
 " vim-airline settings
@@ -112,6 +119,8 @@ set statusline+=%*
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+
+let g:syntastic_c_checkers = []
 
 
 " vdebug settings
@@ -159,15 +168,15 @@ colorscheme jellybeans
 
 
 nnoremap <c-s> :update<cr>
-nnoremap <c-h> :bprev<cr>
-nnoremap <c-l> :bnext<cr>
-
-nnoremap Q <nop>
-
+nnoremap <c-j> :bprev<cr>
+nnoremap <c-k> :bnext<cr>
 nnoremap <c-n> :call NumberToggle()<cr>
-nnoremap <c-w> :call CloseBuffer()<cr>
+nnoremap Q :call CloseBuffer()<cr>
 
-nnoremap <c-t> <c-w>w
+
+" nnoremap Q <nop>
+" nnoremap <c-w> :call CloseBuffer()<cr>
+" nnoremap <c-t> <c-w>w
 
 
 " ----------------------------------------------------------------
