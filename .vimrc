@@ -7,7 +7,6 @@
 " 4. Scheme and colors
 " 5. Key mappings
 " 6. Filetype settings
-"
 
 
 " ----------------------------------------------------------------
@@ -21,7 +20,9 @@ set nowrap
 set showcmd
 set incsearch
 set tabstop=4
+set softtabstop=4
 set shiftwidth=4
+set autoindent
 set numberwidth=10
 set nocompatible
 set expandtab
@@ -32,6 +33,7 @@ set splitbelow
 set formatoptions-=cro
 set virtualedit=all
 set timeoutlen=1000 ttimeoutlen=0
+set encoding=utf-8
 
 
 " ----------------------------------------------------------------
@@ -57,7 +59,9 @@ Plugin 'machakann/vim-highlightedyank'
 Plugin 'vim-airline/vim-airline'
 Plugin 'tpope/vim-surround'
 Plugin 'vim-syntastic/syntastic'
-Plugin 'vim-vdebug/vdebug'
+Plugin 'tibabit/vim-templates'
+Plugin 'junegunn/fzf'
+
 
 call vundle#end()
 
@@ -72,9 +76,15 @@ call vundle#end()
 " ----------------------------------------------------------------
 
 
+" FZF settings
+nnoremap <c-p> :FZF<cr>
+let $FZF_DEFAULT_COMMAND = 'ag -g ""'
+let g:fzf_colors = { 'border': ['fg', 'Ignore'] }
+let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6, 'relative': v:true} }
+
+
 " NERDTree settings
 let g:NERDTreeWinSize=25
-" nnoremap <c-t> :NERDTreeToggle<cr>
 
 " Start NERDTree when Vim is started without file arguments.
 autocmd StdinReadPre * let s:std_in=1
@@ -100,9 +110,9 @@ let g:ycm_filetype_whitelist = {'*': 1}
 let g:ycm_log_level = "error"
 
 let g:ycm_filter_diagnostics = {
-  \ "c": {
-  \      "regex": ["warning"],
-  \      "level": "warning",
+  \ 'c': {
+  \      'regex': ['warning'],
+  \      'level': 'warning',
   \    },
   \ }
 
@@ -121,25 +131,11 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
 let g:syntastic_c_checkers = []
+let g:syntastic_python_checkers = []
 
 
-" vdebug settings
-let g:vdebug_keymap = {
-    \    "run"               : "<F5>",
-    \    "run_to_cursor"     : "<F9>",
-    \    "step_over"         : "<F2>",
-    \    "step_into"         : "<F3>",
-    \    "step_out"          : "<F4>",
-    \    "close"             : "<F6>",
-    \    "detach"            : "<F7>",
-    \    "set_breakpoint"    : "<F1>",
-    \    "get_context"       : "<F11>",
-    \    "eval_under_cursor" : "<F12>",
-    \    "eval_visual"       : "<Leader>e",
-    \}
-let g:vdebug_options = {
-    \   "simplified_status" : 0,
-    \}
+" vim-templates settings
+let g:tmpl_search_paths = ['~/.vim/templates']
 
 
 " ----------------------------------------------------------------
@@ -172,11 +168,6 @@ nnoremap <c-j> :bprev<cr>
 nnoremap <c-k> :bnext<cr>
 nnoremap <c-n> :call NumberToggle()<cr>
 nnoremap Q :call CloseBuffer()<cr>
-
-
-" nnoremap Q <nop>
-" nnoremap <c-w> :call CloseBuffer()<cr>
-" nnoremap <c-t> <c-w>w
 
 
 " ----------------------------------------------------------------
