@@ -13,7 +13,7 @@
 " 1. General settings ( start )
 " ----------------------------------------------------------------
 
-
+set autoread
 set scrolloff=20
 set relativenumber
 set nowrap
@@ -49,6 +49,10 @@ set encoding=utf-8
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
+
+Plugin 'francoiscabrol/ranger.vim'
+Plugin 'vim-vdebug/vdebug'
+Plugin 'benjifisher/matchit.zip'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'jiangmiao/auto-pairs'
 Plugin 'VundleVim/Vundle.vim'
@@ -76,6 +80,28 @@ call vundle#end()
 " ----------------------------------------------------------------
 
 
+" vdebug settings
+let g:vdebug_keymap = {
+    \    "run"               : "<F5>",
+    \    "run_to_cursor"     : "<F9>",
+    \    "step_over"         : "<F2>",
+    \    "step_into"         : "<F3>",
+    \    "step_out"          : "<F4>",
+    \    "close"             : "<F6>",
+    \    "detach"            : "<F7>",
+    \    "set_breakpoint"    : "<F1>",
+    \    "get_context"       : "<F11>",
+    \    "eval_under_cursor" : "<F12>",
+    \    "eval_visual"       : "<Leader>e",
+    \}
+let g:vdebug_options = {
+    \   "simplified_status" : 0,
+    \   "break_on_open" : 0,
+    \   "watch_window_style": "compact",
+    \   "port": 9000,
+    \}
+
+
 " FZF settings
 nnoremap <c-p> :FZF<cr>
 let $FZF_DEFAULT_COMMAND = 'ag -g ""'
@@ -87,8 +113,11 @@ let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6, 'relative': v:true
 let g:NERDTreeWinSize=25
 
 " Start NERDTree when Vim is started without file arguments.
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() != 0 && !exists('s:std_in') | NERDTree | wincmd p | endif
+" autocmd StdinReadPre * let s:std_in=1
+" autocmd VimEnter * if argc() != 0 && !exists('s:std_in') | NERDTree | wincmd p | endif
+
+" Start NERDTree and put the cursor back in the other window.
+autocmd VimEnter * NERDTree | wincmd p
 
 " Exit Vim if NERDTree is the only window left.
 autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
@@ -178,6 +207,17 @@ nnoremap Q :call CloseBuffer()<cr>
 " ----------------------------------------------------------------
 " 6. Helper functions ( start )
 " ----------------------------------------------------------------
+
+
+" Auto-reloading a file as soon as it changes on disk
+if ! exists("g:CheckUpdateStarted")
+    let g:CheckUpdateStarted=1
+    call timer_start(1,'CheckUpdate')
+endif
+function! CheckUpdate(timer)
+    silent! checktime
+    call timer_start(1000,'CheckUpdate')
+endfunction
 
 
 " Relative or absolute number lines
